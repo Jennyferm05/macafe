@@ -1,0 +1,123 @@
+{% extends "base.html" %} {% block titulo %} Lista de Prestamos {% endblock %}
+{% block contenido %} <br /><br />
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-header">
+          <h2>Registro venta</h2>
+        </div>
+        <div class="card-body">
+          <form action="" method="POST" id="ventaForm">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="nombre_comprador">Nombre del comprador</label>
+              <input
+                type="text"
+                class="form-control"
+                name="nombre_comprador"
+                id="nombre_comprador"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="documento">Documento</label>
+              <input
+                type="number"
+                class="form-control"
+                name="documento"
+                id="documento"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="fecha_compra">Fecha Compra</label>
+              <input
+                type="date"
+                class="form-control"
+                name="fecha_compra"
+                id="fecha_compra"
+                readonly
+              />
+            </div>
+            <div class="mb-3">
+              <label for="producto">Producto</label>
+              <input
+                type="text"
+                class="form-control"
+                name="producto"
+                id="producto"
+                value="Cafe"
+                readonly
+              />
+            </div>
+            <div class="mb-3">
+              <label for="precio_kilogramo">Precio del kilogramo</label>
+              <input
+                type="text"
+                class="form-control"
+                name="precio_kilogramo"
+                id="precio_kilogramo"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="cantidad">Cantidad</label>
+              <input
+                type="number"
+                class="form-control"
+                name="cantidad"
+                id="cantidad"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="total_pagar">Total a pagar</label>
+              <input
+                type="text"
+                class="form-control"
+                name="total_pagar"
+                id="total_pagar"
+                readonly
+              />
+            </div>
+            <button type="submit" class="btn btn-success btn-block text-white">
+              Guardar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Función para calcular el total a pagar en tiempo real
+  document.getElementById("ventaForm").addEventListener("input", function () {
+    // Obtener el valor de la cantidad y el precio por kilogramo
+    var cantidad = parseFloat(document.getElementById("cantidad").value) || 0;
+    var precioKilogramo =
+      parseFloat(document.getElementById("precio_kilogramo").value) || 0;
+
+    // Calcular el total a pagar
+    var totalPagar = cantidad * precioKilogramo;
+
+    // Mostrar el total a pagar en el campo correspondiente
+    document.getElementById("total_pagar").value = totalPagar.toFixed(2);
+  });
+
+  // Asignar la fecha actual al campo fecha_compra al cargar la página
+  window.addEventListener("DOMContentLoaded", function () {
+    var fechaActual = new Date();
+    // Ajusta la fecha al huso horario de Colombia (UTC-5)
+    fechaActual.setHours(fechaActual.getHours() - 5);
+    var fechaActualString = fechaActual.toISOString().split("T")[0];
+    
+    // Asignar la fecha actual al campo fecha_compra
+    document.getElementById("fecha_compra").value = fechaActualString;
+  });
+</script>
+
+
+
+{% endblock %}
